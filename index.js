@@ -1,5 +1,7 @@
-const socket = require('./config/socket')
-const bootstrap = require('./config/bootstrap')
+require('module-alias/register')
+
+const socket = require('@/config/socket')
+const bootstrap = require('@/config/bootstrap')
 
 const apps = [
   { name: 'Server', config: bootstrap, port: 8000 },

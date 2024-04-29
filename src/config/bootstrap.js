@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 
+const handler = require('@/handler')
+
 class Bootstrap {
   constructor () {
     this.app = express()
@@ -26,25 +28,10 @@ class Bootstrap {
       .use(morgan('dev'))
 
       // init prefix and router
-      .use('/qms', this.routes())
+      .use('/qms', handler)
     
       // Listening to port
       .listen(port, callback())
-  }
-
-  routes () {
-    const router = express.Router()
-
-    router
-      .post('/counter', (req, res) => {
-        console.log(req.body)
-        const response = 'success'
-
-        res.status(200)
-          .send(response)
-      })
-
-    return router
   }
 }
 
