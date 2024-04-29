@@ -23,6 +23,7 @@
     "sqlite3": "^5.1.7"
   },
   "_moduleAliases": {
-    "@": "./src"
+    "@": "./src",
+    "@root": "."
   }
 }

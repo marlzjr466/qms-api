@@ -7,17 +7,13 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/qms.db3'
-    }
-  },
+      filename: './src/db/dev.db3'
+    },
+  
+    migrations: {
+      directory: './src/db/migrations'
+    },
 
-  useNullAsDefault: true,
-
-  migrations: {
-    directory: './data/migrations'
-  },
-
-  seeds: {
-    director: './data/seeds'
+    useNullAsDefault: true
   }
 }
