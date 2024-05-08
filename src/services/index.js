@@ -1,61 +1,98 @@
 const knex = require('@/config/knex')
 
-module.exports = {
-  async list ({
-    is_first: isFirst = false,
-    filter = null
-  }) {
-    try {
-      const list = await knex('counters')
-        .modify(knex => {
-          if (filter) {
-            knex.where(filter.column, filter.value)
-          }
+// service
+const countersService = require('@/services/counters')
+const queuesService = require('@/services/queues')
 
-          if (isFirst) {
-            knex.first()
-          }
-        })
-      
-      return list
-    } catch (error) {
-      throw error
-    }
-  },
-
-  async create () {
-    try {
-      const [id] = await knex('counters')
-        .insert({ total_serve: 0 })
-
-      return {
-        id,
-        status: 0,
-        total_serve: 0
-      }
-    } catch (error) {
-      throw error
-    }
-  },
-
-  async modify ({ filter }) {
-    try {
-      await knex('counters')
-        .where(filter.column, filter.value)
-        .update(filter.data)
-
-      return true
-    } catch (error) {
-      throw error
-    }
-  },
-
+const self = {
   async reset () {
     try {
       await knex('counters').truncate()
-      return true
+      await knex('queues').truncate()
+
+      return 'success'
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async serve (id) {
+    try {
+      const queue = await queuesService.list({
+        is_first: true,
+        filter: {
+          column: 'status',
+          value: 'waiting'
+        }
+      })
+
+      if (!queue) {
+        await countersService.modify({
+          filter: {
+            column: 'id',
+            value: id,
+            data: {
+              serving: 0
+            }
+          }
+        })
+
+        return ('No available ticket in queue')
+      }
+
+      await queuesService.modify({
+        filter: {
+          column: 'id',
+          value: queue.id,
+          data: {
+            serve_by: id,
+            status: 'serving'
+          }
+        }
+      })
+
+      await countersService.modify({
+        filter: {
+          column: 'id',
+          value: id,
+          data: {
+            serving: queue.id
+          }
+        }
+      })
+
+      return 'success'
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async next (id) {
+    try {
+      const counter = await countersService.list({
+        is_first: true,
+        filter: {
+          column: 'id',
+          value: id
+        }
+      })
+
+      await queuesService.modify({
+        filter: {
+          column: 'id',
+          value: counter.serving,
+          data: {
+            status: 'done'
+          }
+        }
+      })
+      
+      const res = await self.serve(id)
+      return res
     } catch (error) {
       throw error
     }
   }
 }
+
+module.exports = self
