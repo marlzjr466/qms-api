@@ -12,7 +12,7 @@ class Socket {
       // create new queues
       socket.on('generate-number', async number => {
         await queuesService.create(number)
-        socket.broadcast.emit('inqueue-number', number)
+        socket.broadcast.emit('refresh', ['queues'])
       })
 
       // jobs for current date
