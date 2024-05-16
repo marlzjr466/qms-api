@@ -5,10 +5,13 @@ const countersService = require('@/services/counters')
 const queuesService = require('@/services/queues')
 
 const self = {
-  async reset () {
+  async reset ({ all = false }) {
     try {
-      await knex('counters').truncate()
       await knex('queues').truncate()
+
+      if (all) {
+        await knex('counters').truncate()
+      }
 
       return 'success'
     } catch (error) {
