@@ -49,23 +49,6 @@ class Socket {
         }, 1000)
       })
     })
-    
-    // io.on('connection', socket => {
-    //   // create new queues
-    //   socket.on('generate-number', async number => {
-    //     await queuesService.create(number)
-    //     socket.broadcast.emit('refresh', ['queues'])
-    //   })
-
-    //   // jobs for current date
-    //   setInterval(() => {
-    //     socket.emit('current-date', moment().format('MMMM Do YYYY, h:mm:ss a'))
-    //   }, 1000)
-
-    //   setInterval(() => {
-    //     socket.emit('current-time', moment().format('h:mm a'))
-    //   }, 1000)
-    // })
 
     callback()
   }
