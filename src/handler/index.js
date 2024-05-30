@@ -24,7 +24,7 @@ router
         .send(response)
     } catch (error) {
       console.log(`${req.params.type} error:`, error)
-      res.status(401)
+      res.status(400)
         .send(error)
     }
   })
@@ -43,7 +43,7 @@ router
         .send(response)
     } catch (error) {
       console.log(`${req.params.type} error:`, error)
-      res.status(401)
+      res.status(400)
         .send(error)
     }
   })
@@ -62,7 +62,7 @@ router
         .send(response)
     } catch (error) {
       console.log(`reset error:`, error)
-      res.status(401)
+      res.status(400)
         .send(error)
     }
   })
@@ -81,7 +81,7 @@ router
         .send(response)
     } catch (error) {
       console.log(`${req.params.type} error:`, error)
-      res.status(401)
+      res.status(400)
         .send(error)
     }
   })

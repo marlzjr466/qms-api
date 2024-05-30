@@ -39,6 +39,17 @@ class Socket {
           socket.broadcast.emit('session-start')
         })
 
+        // call again
+        socket.on('call-again', data => {
+          console.log('call-again:', data)
+          socket.broadcast.emit('monitor:call-again', data)
+        })
+
+        // call again
+        socket.on('transfer-ticket', data => {
+          socket.broadcast.emit(`transfered-ticket:${data.user_id.to}`, data)
+        })
+
         // jobs for current date
         setInterval(() => {
           socket.emit('current-date', moment().format('MMMM Do YYYY, h:mm:ss a'))

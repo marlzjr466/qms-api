@@ -17,6 +17,12 @@ exports.up = function(knex) {
 
     table.enu('status', ['waiting', 'serving', 'done'])
       .notNullable()
+
+    table.timestamp('created_at')
+      .defaultTo(knex.fn.now())
+
+    table.timestamp('completed_at')
+      .defaultTo(knex.fn.now())
   })
 };
 

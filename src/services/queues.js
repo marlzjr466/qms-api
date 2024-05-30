@@ -9,7 +9,17 @@ module.exports = {
       const list = await knex('queues')
         .modify(knex => {
           if (filter) {
-            knex.where(filter.column, filter.value)
+            if (filter.fields) {
+              for (const field of filter.fields) {
+                knex.where(field.column, field.operator || '=', field.value)
+              }
+            } else {
+              knex.where(filter.column, filter.operator || '=', filter.value)
+            }
+
+            if (filter.sort) {
+              knex.orderBy(filter.sort.column || 'id', filter.sort.direction)
+            }
           }
 
           if (isFirst) {
@@ -23,12 +33,17 @@ module.exports = {
     }
   },
 
-  async create (ticket = 0) {
+  async create (body) {
     try {
+      if (typeof body === 'object') {
+        body = body.ticket
+      }
+      
       await knex('queues')
         .insert({
-          ticket,
-          status: 'waiting'
+          ticket: body,
+          status: 'waiting',
+          created_at: new Date()
         })
 
       return 'success'

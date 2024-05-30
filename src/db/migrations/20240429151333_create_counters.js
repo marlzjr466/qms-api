@@ -11,6 +11,9 @@ exports.up = function(knex) {
     table.binary('status')
       .notNullable()
 
+    table.integer('session')
+      .notNullable()
+
     table.integer('serving')
       .notNullable()
   })
