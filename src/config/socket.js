@@ -39,6 +39,11 @@ class Socket {
           socket.broadcast.emit('session-start')
         })
 
+        // stop session
+        socket.on('stop-session', () => {
+          socket.broadcast.emit('session-stop')
+        })
+
         // call again
         socket.on('call-again', data => {
           console.log('call-again:', data)
