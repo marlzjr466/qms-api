@@ -8,6 +8,9 @@ exports.up = function(knex) {
       .primary()
       .unsigned()
 
+    table.string('name')
+      .notNullable()
+
     table.binary('status')
       .notNullable()
 

@@ -29,8 +29,11 @@ class Socket {
 
       this[ns].on('connection', socket => {
         // create new queues
-        socket.on('generate-number', async number => {
-          await queuesService.create(number)
+        socket.on('generate-number', async data => {
+          await queuesService.create({
+            ticket: data.queue_number,
+            serve_by: data.id
+          })
           socket.broadcast.emit('refresh', ['queues'])
         })
 

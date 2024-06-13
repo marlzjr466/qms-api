@@ -35,13 +35,10 @@ module.exports = {
 
   async create (body) {
     try {
-      if (typeof body === 'object') {
-        body = body.ticket
-      }
-      
       await knex('queues')
         .insert({
-          ticket: body,
+          ticket: body.ticket,
+          serve_by: body.serve_by,
           status: 'waiting',
           created_at: new Date()
         })

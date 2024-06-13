@@ -24,8 +24,16 @@ const self = {
       const queue = await queuesService.list({
         is_first: true,
         filter: {
-          column: 'status',
-          value: 'waiting'
+          fields: [
+            {
+              column: 'serve_by',
+              value: id
+            },
+            {
+              column: 'status',
+              value: 'waiting'
+            }
+          ]
         }
       })
 

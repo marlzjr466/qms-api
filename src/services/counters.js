@@ -30,10 +30,11 @@ const self = {
     }
   },
 
-  async create () {
+  async create ({ name }) {
     try {
       await knex('counters')
         .insert({
+          name,
           status: 0,
           session: 0,
           serving: 0
